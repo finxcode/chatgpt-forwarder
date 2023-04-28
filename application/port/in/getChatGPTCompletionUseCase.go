@@ -1,5 +1,5 @@
 package in
 
 type GetChatGPTCompletionUseCase interface {
-	GetChatGPTCompletion(command *CompletionCommand) *CompletionResponse
+	GetChatGPTCompletion(command *CompletionCommand) (*CompletionResponse, error)
 }

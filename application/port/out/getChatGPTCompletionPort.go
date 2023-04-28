@@ -1,5 +1,7 @@
 package out
 
-type getChatGPTCompletionPort interface {
-	GetChatGPTCompletion(command *CompletionCommand) *CompletionResponse
+import "chatgpt-forwarder/application/port/in"
+
+type GetChatGPTCompletionPort interface {
+	GetChatGPTCompletionOutgoing(command *in.CompletionCommand) (*in.CompletionResponse, error)
 }

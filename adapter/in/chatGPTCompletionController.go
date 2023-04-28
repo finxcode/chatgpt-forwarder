@@ -32,7 +32,6 @@ func (ctl *ChatGPTCompletionController) GetCompletion() fiber.Handler {
 				}
 				return c.JSON(resp)
 			} else {
-				log.Print(err.Error())
 				resp := common.Response{
 					ErrCode: fiber.StatusServiceUnavailable,
 					Message: "service unavailable, please try later",
@@ -41,8 +40,9 @@ func (ctl *ChatGPTCompletionController) GetCompletion() fiber.Handler {
 				return c.JSON(resp)
 			}
 		}
-		respBody := ctl.getChatGPTCompletionUseCase.GetChatGPTCompletion(command)
-		if respBody == nil {
+		respBody, err := ctl.getChatGPTCompletionUseCase.GetChatGPTCompletion(command)
+		if err != nil {
+			log.Println(err.Error())
 			resp := common.Response{
 				ErrCode: fiber.StatusServiceUnavailable,
 				Message: "service unavailable, please try later",
