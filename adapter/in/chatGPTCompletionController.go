@@ -41,7 +41,7 @@ func (ctl *ChatGPTCompletionController) GetCompletion() fiber.Handler {
 			}
 		}
 		respBody, err := ctl.getChatGPTCompletionUseCase.GetChatGPTCompletion(command)
-		if err != nil {
+		if err != nil || respBody == nil {
 			log.Println(err.Error())
 			resp := common.Response{
 				ErrCode: fiber.StatusServiceUnavailable,

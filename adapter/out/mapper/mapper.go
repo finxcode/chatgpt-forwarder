@@ -19,7 +19,10 @@ func MapUserCommandToChatGPTCommand(command *in.CompletionCommand) *out.Completi
 }
 
 func MapChatGPTResponseToUserResponse(response *out.CompletionResponse) *in.CompletionResponse {
-	m := response.Choices[0].Message
+	if len(response.Data.Choices) == 0 {
+		return nil
+	}
+	m := response.Data.Choices[0].Message
 	respM := in.Message{
 		Role:    m.Role,
 		Content: m.Content,

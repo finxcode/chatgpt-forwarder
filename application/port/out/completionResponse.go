@@ -1,6 +1,12 @@
 package out
 
 type CompletionResponse struct {
+	ErrorCode int    `json:"error_code"`
+	Msg       string `json:"msg"`
+	Data      Data   `json:"data"`
+}
+
+type Data struct {
 	Id      string   `json:"id"`
 	Object  string   `json:"object"`
 	Created uint64   `json:"created"`

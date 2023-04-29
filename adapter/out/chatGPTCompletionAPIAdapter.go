@@ -7,7 +7,7 @@ import (
 	"chatgpt-forwarder/application/port/out"
 	"encoding/json"
 	"fmt"
-	"log"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -26,6 +26,17 @@ func NewChatGPTCompletionAPIAdapter() *chatGPTCompletionAPIAdapter {
 	return &chatGPTCompletionAPIAdapter{}
 }
 
+type Request struct {
+	Model       string    `json:"model"`
+	Messages    []Message `json:"messages"`
+	Temperature float32   `json:"temperature"`
+}
+
+type Message struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
 func (c *chatGPTCompletionAPIAdapter) GetChatGPTCompletionOutgoing(command *in.CompletionCommand) (*in.CompletionResponse, error) {
 	chatGPTCommand := mapper.MapUserCommandToChatGPTCommand(command)
 	chatGPTCommand.Model = MODEL
@@ -39,21 +50,25 @@ func (c *chatGPTCompletionAPIAdapter) GetChatGPTCompletionOutgoing(command *in.C
 	reqBody := bytes.NewReader(marshal)
 
 	r, err := http.NewRequest("GET", fmt.Sprintf("%s%s%s", HOST, PORT, API), reqBody)
-	log.Println(fmt.Sprintf("%s%s%s", HOST, PORT, API))
+
 	if err != nil {
 		return nil, err
 	}
 	r.Header.Add("Content-Type", "application/json")
 
-	client := &http.Client{}
+	var client = &http.Client{
+		Transport: &http.Transport{},
+	}
+
 	res, err := client.Do(r)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
-	err = json.NewDecoder(res.Body).Decode(&respBody)
-	log.Println(respBody.Model)
+	resp, err := ioutil.ReadAll(res.Body)
+	err = json.Unmarshal(resp, &respBody)
+
 	if err != nil {
 		return nil, err
 	}
