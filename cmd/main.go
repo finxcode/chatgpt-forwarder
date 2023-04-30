@@ -4,7 +4,7 @@ import (
 	"chatgpt-forwarder/adapter/in"
 	"chatgpt-forwarder/adapter/out"
 	"chatgpt-forwarder/application/service"
-	"chatgpt-forwarder/cnd/fiber"
+	"chatgpt-forwarder/cmd/fiber"
 )
 
 func main() {

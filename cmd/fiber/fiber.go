@@ -2,8 +2,8 @@ package fiber
 
 import (
 	"chatgpt-forwarder/adapter/in"
-	"chatgpt-forwarder/cnd/fiber/middleware"
-	"chatgpt-forwarder/cnd/fiber/routes"
+	"chatgpt-forwarder/cmd/fiber/middleware"
+	"chatgpt-forwarder/cmd/fiber/routes"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"log"
